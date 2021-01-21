@@ -31,12 +31,15 @@ jobs:
     name: coverage
     runs-on: ubuntu-latest
     steps:
-      - name: Test & publish code coverage
-        uses: paambaati/codeclimate-action@v2.7.5
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: '12'
+      - run: npm install -g yarn
+      - run: yarn install
+      - run: yarn build
+      - uses: paambaati/codeclimate-action@v2.2.4
         env:
           CC_TEST_REPORTER_ID: 753dcf733c5b420e507ffa07116f70bd0f1af5316736b3db235a93dad0d28e66
         with:
-          coverageCommand: npm run coverage
-          debug: true
-
-
+          coverageCommand: yarn coverage

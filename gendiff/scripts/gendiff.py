@@ -1,10 +1,10 @@
-"""Scripts for launch gendiff."""
+"""Script for launch gendiff."""
 
 from gendiff import engine, generate_diff
 
 
 def main():
-    """launch gendiff."""
+    """Launch gendiff."""
     engine.run(generate_diff.generate_diff)
 
 

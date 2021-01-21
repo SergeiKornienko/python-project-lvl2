@@ -3,9 +3,11 @@ name: pytest
 on:
   - push
   - pull_request
+  paths:
+    - tests/*
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -26,4 +28,26 @@ jobs:
       - name: Run pytest
         run: |
           make pytest
-    
+    coverage:
+      needs: [ test ]
+      name: coverage
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          # make depends on poetry
+      - name: Install dependencies
+        run: |
+          pip install poetry
+          pip install -U pytest
+          make install
+      - uses: paambaati/codeclimate-action@v2.2.4
+        env:
+          CC_TEST_REPORTER_ID: 753dcf733c5b420e507ffa07116f70bd0f1af5316736b3db235a93dad0d28e66
+        with:
+          coverageCommand: pytest
+
+

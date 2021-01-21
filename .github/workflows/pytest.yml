@@ -1,11 +1,19 @@
 name: pytest
 
 on:
-  - push
-  - pull_request
-  paths:
-    - tests/*
-
+  push:
+    branches:
+      - master
+    tags:
+      - '!*' # Do not execute on tags
+    paths:
+      - src/*
+      - test/*
+      - '*.json'
+      - yarn.lock
+    pull_request:
+      paths:
+        - '!*.MD'
 jobs:
   test:
     runs-on: ubuntu-latest

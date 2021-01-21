@@ -42,7 +42,7 @@ jobs:
       - run: pip install poetry
       - run: pip install -U pytest
       - run: make install
-      - uses: paambaati/codeclimate-action@v2.2.4
+      - uses: actions/setup-python@v2
         env:
           CC_TEST_REPORTER_ID: 753dcf733c5b420e507ffa07116f70bd0f1af5316736b3db235a93dad0d28e66
         with:

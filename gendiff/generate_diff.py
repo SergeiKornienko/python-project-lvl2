@@ -2,7 +2,7 @@
 import json
 
 
-def generate_diff(file_path1, file_path2):  # noqa: WPS210
+def get_diff(file_path1, file_path2):  # noqa: WPS210
     """Determine the difference in files.
 
     Args:
@@ -29,4 +29,4 @@ def generate_diff(file_path1, file_path2):  # noqa: WPS210
             a=key, b=file1[key], c=file2[key],
         )
     diff = '\n'.join(list(map(inner, keys)))
-    return '\n'.join(['{', diff, '}'])
+    return '\n'.join(['{', diff, '}']).lower()

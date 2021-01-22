@@ -8,6 +8,9 @@ def run(function):
 
     Args:
         function: function
+
+    Returns:
+        Return result to perform function.
     """
     parser = argparse.ArgumentParser(description='Generate diff')
     parser.add_argument('first_file', type=pathlib.Path)
@@ -16,4 +19,4 @@ def run(function):
     args = parser.parse_args()
     file_path1 = str(args.first_file)
     file_path2 = str(args.second_file)
-    print(function(file_path1, file_path2))  # noqa:  WPS421
+    return function(file_path1, file_path2)

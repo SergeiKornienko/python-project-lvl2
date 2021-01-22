@@ -21,29 +21,11 @@ jobs:
     - name: Install dependencies
       run: |
         pip install poetry
-        pip install -U pytest
         make install
     - name: Run pytest
       run: |
+        curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+        chmod +x ./cc-test-reporter
+        ./cc-test-reporter before-build
         make pytest
-  coverage:
-    needs: [ test ]
-    name: coverage
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # we want to test our package on several versions of Python
-        python-version: [ 3.8 ]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - run: pip install poetry
-      - run: pip install -U pytest
-      - run: make install
-      - uses: actions/setup-python@v2
-        env:
-          CC_TEST_REPORTER_ID: 753dcf733c5b420e507ffa07116f70bd0f1af5316736b3db235a93dad0d28e66
-        with:
-          coverageCommand: pytest
+        ./cc-test-reporter after-build -r ${{ secrets.ID_TEST_COVERAGE }}

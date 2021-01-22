@@ -1,1 +1,1 @@
-'''Main module gendiff.'''
+"""Main module gendiff."""

@@ -2,20 +2,16 @@
 import json
 
 
-def get_diff(file_path1, file_path2):  # noqa: WPS210
+def get_diff(file1, file2):  # noqa: WPS210
     """Determine the difference in files.
 
     Args:
-        file_path1: str
-        file_path2: str
+        file1: dict
+        file2: dict
 
     Returns:
         Return string with difference.
     """
-    with open(file_path1) as infile1:
-        file1 = json.load(infile1)
-    with open(file_path2) as infile2:
-        file2 = json.load(infile2)
     keys = sorted(file1.keys() | file2.keys())
 
     def inner(key):  # noqa: WPS430

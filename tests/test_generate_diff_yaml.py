@@ -1,7 +1,8 @@
 """Module of tests generate_diff."""
+import pathlib
+
 from gendiff.generate_diff import get_diff
 from gendiff.opening_files import get_content
-import pathlib
 
 PATH_FILE_DIFF = 'tests/fixtures/diff_file1_file2.txt'
 

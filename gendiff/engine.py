@@ -1,6 +1,7 @@
 """Main module of gendiff."""
 import argparse
 import pathlib
+
 from gendiff.opening_files import get_content
 
 

@@ -1,5 +1,7 @@
 """Module of tests generate_diff."""
+import json
 import pathlib
+
 
 from gendiff.generate_diff import get_diff
 from gendiff.opening_files import get_content
@@ -54,6 +56,19 @@ def test_gen_diff_json_empty_file():
         diff.write(get_diff(*get_content(
             pathlib.Path('tests/fixtures/file_empty.json'),
             pathlib.Path('tests/fixtures/file1.json'),
+        )))
+    with open(PATH_FILE_DIFF) as diff1:
+        assert diff1.read() == expected
+
+
+def test_gen_diff_json_nested():
+    """Test of function generate_diff with nested files."""
+    with open('tests/fixtures/expected_nested_files.txt') as infile:
+        expected = infile.read()
+    with open(PATH_FILE_DIFF, 'w') as diff:
+        diff.write(get_diff(*get_content(
+            pathlib.Path('tests/fixtures/file_nested1.json'),
+            pathlib.Path('tests/fixtures/file_nested2.json'),
         )))
     with open(PATH_FILE_DIFF) as diff1:
         assert diff1.read() == expected

@@ -57,3 +57,16 @@ def test_gen_diff_yaml_empty_file():
         )))
     with open(PATH_FILE_DIFF) as diff1:
         assert diff1.read() == expected
+
+
+def test_gen_diff_yaml_nested():
+    """Test of function generate_diff with nested files."""
+    with open('tests/fixtures/expected_nested_files.txt') as infile:
+        expected = infile.read()
+    with open(PATH_FILE_DIFF, 'w') as diff:
+        diff.write(get_diff(*get_content(
+            pathlib.Path('tests/fixtures/file_nested1.yml'),
+            pathlib.Path('tests/fixtures/file_nested2.yml'),
+        )))
+    with open(PATH_FILE_DIFF) as diff1:
+        assert diff1.read() == expected

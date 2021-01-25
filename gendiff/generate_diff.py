@@ -1,5 +1,4 @@
 """Function for determines the difference in files."""
-import json
 
 
 def get_diff(file1, file2):  # noqa: WPS210

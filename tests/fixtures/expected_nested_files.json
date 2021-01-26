@@ -40,15 +40,18 @@
               },
               "deleted": {
                 "wow": ""
-              }
-            },
-            "added": {
-              "ops": "vops"
+              },
+              "changed": {},
+              "unchanged": {}
             }
+          },
+          "added": {
+            "ops": "vops"
           },
           "unchanged": {
             "key": "value"
-          }
+          },
+          "deleted": {}
         }
       },
       "unchanged": {
@@ -68,7 +71,9 @@
       },
       "unchanged": {
         "foo": "bar"
-      }
+      },
+      "changed": {}
     }
-  }
+  },
+  "unchanged": {}
 }

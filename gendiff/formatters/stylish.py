@@ -1,11 +1,14 @@
 """Module with formatter."""
 
+TAB = '    '
+
 
 def make_format(diff, depth=0):
     """Format dict with difference.
 
     Args:
         diff: dict
+        depth: int
 
     Returns:
         Return formatting difference.
@@ -23,16 +26,40 @@ def make_format(diff, depth=0):
     format_diff = []
     for key in keys:
         if key in delete.keys():
-            format_diff.append(join_line(depth, '  - ', key, make_value(delete[key], depth+1)))
+            format_diff.append(join_line(
+                depth,
+                '  - ',
+                key,
+                format_unchanging(delete[key], depth + 1),
+            ))
         if key in add.keys():
-            format_diff.append(join_line(depth, '  + ', key, make_value(add[key], depth+1)))
+            format_diff.append(join_line(
+                depth,
+                '  + ',
+                key,
+                format_unchanging(add[key], depth + 1),
+            ))
         elif key in unchanged.keys():
-            format_diff.append(join_line(depth, '    ', key, make_value(unchanged[key], depth+1)))
+            format_diff.append(join_line(
+                depth,
+                TAB,
+                key,
+                format_unchanging(unchanged[key], depth + 1),
+            ))
         elif key in change.keys():
-            format_diff.append(join_line(depth, '    ', key, make_format(change[key], depth=depth+1)))
-    print('%%%%%%%%%%%%%%%%%%%%%')
-    print(normalization_json_form('\n'.join(['{', *format_diff, ('    ' * (depth) + '}')])))
-    return normalization_json_form('\n'.join(['{', *format_diff, ('    ' * (depth) + '}')]))
+            format_diff.append(join_line(
+                depth,
+                TAB,
+                key,
+                make_format(change[key], depth=depth+1),
+            ))
+    return normalization_json_form(
+        '\n'.join([
+            '{',
+            *format_diff,
+            '{a}{b}'. format(a=TAB * depth, b='}'),
+        ]),
+    )
 
 
 def normalization_json_form(string):
@@ -53,6 +80,7 @@ def join_line(depth, indent, key, mean):
     """Join line in dict.
 
     Args:
+        depth: int
         indent: str
         key: str
         mean: str
@@ -60,31 +88,37 @@ def join_line(depth, indent, key, mean):
     Returns:
         Return join line.
     """
-    indent_and_key = ''.join([depth * '    ', indent, key, ':'])
+    indent_and_key = ''.join([depth * TAB, indent, key, ':'])
     if str(mean) == '':
         return indent_and_key
     return ' '.join([indent_and_key, str(mean)])
 
 
-def make_value(values, depth):
+def format_unchanging(dict_unchange, depth):
+    """Format dict without changing.
 
-    def inner(items, count):
-        if not isinstance(items, dict):
-            return str(items)
-        list_values = []
-        for key in items.keys():
-            list_values.append(''.join([
-                '    ' * (count + 1),
-                str(key),
-                ': ',
-                str(inner(
-                    items[key],
-                    count=count + 1,
-                )),
-            ]))
-        return '\n'.join([
-            '{',
-            *list_values,
-            '{a}{b}'.format(a=('    ' * (count)), b='}'),
-        ])
-    return inner(values, depth)
+    Args:
+        dict_unchange: dict
+        depth: int
+
+    Returns:
+        Return formatting dict.
+    """
+    if not isinstance(dict_unchange, dict):
+        return str(dict_unchange)
+    list_values = []
+    for key in dict_unchange.keys():
+        list_values.append(''.join([
+            TAB * (depth + 1),
+            str(key),
+            ': ',
+            str(format_unchanging(
+                dict_unchange[key],
+                depth=depth + 1,
+            )),
+        ]))
+    return '\n'.join([
+        '{',
+        *list_values,
+        '{a}{b}'.format(a=(TAB * depth), b='}'),
+    ])

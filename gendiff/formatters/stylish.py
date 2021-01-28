@@ -1,7 +1,7 @@
 """Module with formatter."""
 
 
-def make_format(diff):
+def make_format(diff, depth=0):
     """Format dict with difference.
 
     Args:
@@ -23,14 +23,16 @@ def make_format(diff):
     format_diff = []
     for key in keys:
         if key in delete.keys():
-            format_diff.append(join_line('  - ', key, delete[key]))
+            format_diff.append(join_line(depth, '  - ', key, make_value(delete[key], depth+1)))
         if key in add.keys():
-            format_diff.append(join_line('  + ', key, add[key]))
+            format_diff.append(join_line(depth, '  + ', key, make_value(add[key], depth+1)))
         elif key in unchanged.keys():
-            format_diff.append(join_line('    ', key, unchanged[key]))
+            format_diff.append(join_line(depth, '    ', key, make_value(unchanged[key], depth+1)))
         elif key in change.keys():
-            format_diff.append(join_line('    ', key, change[key]))
-    return normalization_json_form('\n'.join(['{', *format_diff, '}']))
+            format_diff.append(join_line(depth, '    ', key, make_format(change[key], depth=depth+1)))
+    print('%%%%%%%%%%%%%%%%%%%%%')
+    print(normalization_json_form('\n'.join(['{', *format_diff, ('    ' * (depth) + '}')])))
+    return normalization_json_form('\n'.join(['{', *format_diff, ('    ' * (depth) + '}')]))
 
 
 def normalization_json_form(string):
@@ -47,7 +49,7 @@ def normalization_json_form(string):
     return string.replace('None', 'null')
 
 
-def join_line(indent, key, mean):
+def join_line(depth, indent, key, mean):
     """Join line in dict.
 
     Args:
@@ -58,4 +60,31 @@ def join_line(indent, key, mean):
     Returns:
         Return join line.
     """
-    return ''.join([indent, key, ': ', str(mean)])
+    indent_and_key = ''.join([depth * '    ', indent, key, ':'])
+    if str(mean) == '':
+        return indent_and_key
+    return ' '.join([indent_and_key, str(mean)])
+
+
+def make_value(values, depth):
+
+    def inner(items, count):
+        if not isinstance(items, dict):
+            return str(items)
+        list_values = []
+        for key in items.keys():
+            list_values.append(''.join([
+                '    ' * (count + 1),
+                str(key),
+                ': ',
+                str(inner(
+                    items[key],
+                    count=count + 1,
+                )),
+            ]))
+        return '\n'.join([
+            '{',
+            *list_values,
+            '{a}{b}'.format(a=('    ' * (count)), b='}'),
+        ])
+    return inner(values, depth)

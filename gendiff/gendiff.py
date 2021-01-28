@@ -3,9 +3,12 @@ import json
 
 import yaml
 
-from gendiff.formatters import stylish
+from gendiff.formatters import plain, stylish
 
-FORMATS = {'stylish': stylish}  # noqa: WPS407
+FORMATS = {  # noqa: WPS407
+    'stylish': stylish,
+    'plain': plain,
+}
 
 
 def generate_diff(file_path1, file_path2, formatter='stylish'):

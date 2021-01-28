@@ -58,12 +58,9 @@ def get_string_add(add, key, path):
         path: str
 
     Returns:
-        Return string with add items/
+        Return string with add items.
     """
-    if isinstance(add[key], dict):
-        mean_add = '[complex value]'
-    else:
-        mean_add = "'{b}'".format(b=add[key])
+    mean_add = check_complex_value(add[key])
     return ' '.join([
         PROPERTY,
         "'{c}'".format(c=join_path(path, key)),
@@ -84,14 +81,8 @@ def get_string_update(add, delete, key, path):
     Returns:
         Return string with update items.
     """
-    if isinstance(add[key], dict):
-        mean_add = '[complex value]'
-    else:
-        mean_add = "'{d}'".format(d=add[key])
-    if isinstance(delete[key], dict):
-        mean_del = '[complex value]'
-    else:
-        mean_del = "'{e}'".format(e=delete[key])
+    mean_add = check_complex_value(add[key])
+    mean_del = check_complex_value(delete[key])
     return ' '.join([
         PROPERTY,
         "'{f}'".format(f=join_path(path, key)),
@@ -113,3 +104,17 @@ def join_path(path, key):
         Return string with path.
     """
     return key if path == '' else '.'.join([path, key])
+
+
+def check_complex_value(mean):
+    """Check value.
+
+    Args:
+        mean: dict
+
+    Returns:
+        Return mean value.
+    """
+    return '[complex value]' if isinstance(
+        mean, dict,
+    ) else "'{b}'".format(b=mean)

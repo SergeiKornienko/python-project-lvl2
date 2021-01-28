@@ -17,7 +17,7 @@ def test_generate_diff_stylish_two_simple_files():
 
 def test_generate_diff_stylish_two_nested_files():
     """Test formatters stylish."""
-    with open('tests/fixtures/expected_nested_files.txt') as infile:
+    with open('tests/fixtures/expected_nested_files_stylish.txt') as infile:
         expected = infile.read()
     diff = gendiff.generate_diff(
         pathlib.Path('tests/fixtures/file_nested1.json'),

@@ -11,7 +11,11 @@ Get difference  of YAML-files
 
 [![asciicast](https://asciinema.org/a/386864.svg)](https://asciinema.org/a/386864)
 
-Get difference of nested files
+Get difference of nested files formatter stylish
 
 [![asciicast](https://asciinema.org/a/387563.svg)](https://asciinema.org/a/387563)
+
+Get difference of nested files formatter plain
+
+[![asciicast](https://asciinema.org/a/387634.svg)](https://asciinema.org/a/387634)
 

@@ -1,12 +1,14 @@
 """Module with formatter plain."""
 
+PROPERTY = 'Property'
+
 
 def make_format(diff, path=''):
     """Format dict with difference.
 
     Args:
         diff: dict
-        depth: int
+        path: str
 
     Returns:
         Return formatting difference.
@@ -14,37 +16,23 @@ def make_format(diff, path=''):
     add = diff['added']
     delete = diff['deleted']
     change = diff['changed']
-    unchanged = diff['unchanged']
-    keys = sorted(
-        add.keys() |
-        delete.keys() |
-        change.keys() |
-        unchanged.keys(),
-    )
     list_diff = []
-    for key in keys:
-
-        if key in change.keys():
-            new_path = '.'.join([path, key])
-            if new_path.startswith('.'):
-                new_path = new_path[1:]
-            list_diff.append(make_format(change[key], path=new_path))
-        elif key in delete.keys() and key in add.keys():
-            list_diff.append(get_string_update(add, delete, key, path))
-
-        elif key in delete.keys():
-            new_path = '.'.join([path, key])
-            if new_path.startswith('.'):
-                new_path = new_path[1:]
-            list_diff.append(' '.join([
-                'Property',
-                "'{a}'".format(a=new_path),
-                'was removed'
-            ]))
-        elif key in add.keys():
-            list_diff.append(get_string_add(add, key, path))
-
-    return normalization_json_form('\n'.join(list_diff))
+    for add_key in add.keys() - delete.keys():
+        list_diff.append(get_string_add(add, add_key, path))
+    for del_key in delete.keys() - add.keys():
+        list_diff.append(' '.join([
+            PROPERTY,
+            "'{a}'".format(a=join_path(path, del_key)),
+            'was removed',
+        ]))
+    for mod_key in delete.keys() & add.keys():
+        list_diff.append(get_string_update(add, delete, mod_key, path))
+    for change_key in change.keys():
+        list_diff.append(make_format(
+            change[change_key],
+            path=join_path(path, change_key),
+        ))
+    return normalization_json_form('\n'.join(sorted(list_diff)))
 
 
 def normalization_json_form(string):
@@ -62,38 +50,66 @@ def normalization_json_form(string):
 
 
 def get_string_add(add, key, path):
-    new_path = '.'.join([path, key])
-    if new_path.startswith('.'):
-        new_path = new_path[1:]
+    """Get string with add items.
+
+    Args:
+        add: dict
+        key: str
+        path: str
+
+    Returns:
+        Return string with add items/
+    """
     if isinstance(add[key], dict):
         mean_add = '[complex value]'
     else:
-        mean_add = "'{a}'".format(a=add[key])
+        mean_add = "'{b}'".format(b=add[key])
     return ' '.join([
-                'Property',
-                "'{a}'".format(a=new_path),
-                'was added with value:',
-                mean_add,
+        PROPERTY,
+        "'{c}'".format(c=join_path(path, key)),
+        'was added with value:',
+        mean_add,
     ])
 
 
 def get_string_update(add, delete, key, path):
-    new_path = '.'.join([path, key])
-    if new_path.startswith('.'):
-        new_path = new_path[1:]
+    """Get string with update items.
+
+    Args:
+        add: dict
+        delete: dict
+        key: str
+        path: srt
+
+    Returns:
+        Return string with update items.
+    """
     if isinstance(add[key], dict):
         mean_add = '[complex value]'
     else:
-        mean_add = "'{a}'".format(a=add[key])
+        mean_add = "'{d}'".format(d=add[key])
     if isinstance(delete[key], dict):
         mean_del = '[complex value]'
     else:
-        mean_del = "'{a}'".format(a=delete[key])
+        mean_del = "'{e}'".format(e=delete[key])
     return ' '.join([
-                'Property',
-                "'{a}'".format(a=new_path),
-                'was updated. From',
-                mean_del,
-                'to',
-                mean_add,
+        PROPERTY,
+        "'{f}'".format(f=join_path(path, key)),
+        'was updated. From',
+        mean_del,
+        'to',
+        mean_add,
     ])
+
+
+def join_path(path, key):
+    """Join path to mean.
+
+    Args:
+        path: str
+        key: str
+
+    Returns:
+        Return string with path.
+    """
+    return key if path == '' else '.'.join([path, key])

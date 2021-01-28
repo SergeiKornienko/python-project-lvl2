@@ -1,4 +1,4 @@
-"""Module with formatter."""
+"""Module with formatter stylish."""
 
 TAB = '    '
 
@@ -94,26 +94,26 @@ def join_line(depth, indent, key, mean):
     return ' '.join([indent_and_key, str(mean)])
 
 
-def format_unchanging(dict_unchange, depth):
+def format_unchanging(dict_unchanged, depth):
     """Format dict without changing.
 
     Args:
-        dict_unchange: dict
+        dict_unchanged: dict
         depth: int
 
     Returns:
         Return formatting dict.
     """
-    if not isinstance(dict_unchange, dict):
-        return str(dict_unchange)
+    if not isinstance(dict_unchanged, dict):
+        return str(dict_unchanged)
     list_values = []
-    for key in dict_unchange.keys():
+    for key in dict_unchanged.keys():
         list_values.append(''.join([
             TAB * (depth + 1),
             str(key),
             ': ',
             str(format_unchanging(
-                dict_unchange[key],
+                dict_unchanged[key],
                 depth=depth + 1,
             )),
         ]))

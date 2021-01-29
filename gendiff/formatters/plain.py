@@ -44,9 +44,9 @@ def normalization_json_form(string):
     Returns:
         Return normalize string.
     """
-    string = string.replace("'True'", 'true')
-    string = string.replace("'False'", 'false')
-    return string.replace("'None'", 'null')
+    string = string.replace("True", 'true')
+    string = string.replace("False", 'false')
+    return string.replace("None", 'null')
 
 
 def get_string_add(add, key, path):
@@ -115,6 +115,9 @@ def check_complex_value(mean):
     Returns:
         Return mean value.
     """
-    return '[complex value]' if isinstance(
-        mean, dict,
-    ) else "'{b}'".format(b=mean)
+    if isinstance(mean, str):
+        return "'{b}'".format(b=mean)
+    if isinstance(mean, dict):
+        return '[complex value]'
+    else:
+        return "{b}".format(b=mean)

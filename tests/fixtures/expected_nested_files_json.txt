@@ -33,6 +33,10 @@
       },
       "changed": {
         "setting6": {
+          "added": {
+            "ops": "vops"
+          },
+          "deleted": {},
           "changed": {
             "doge": {
               "added": {
@@ -45,13 +49,9 @@
               "unchanged": {}
             }
           },
-          "added": {
-            "ops": "vops"
-          },
           "unchanged": {
             "key": "value"
-          },
-          "deleted": {}
+          }
         }
       },
       "unchanged": {
@@ -69,10 +69,10 @@
           "key": "value"
         }
       },
+      "changed": {},
       "unchanged": {
         "foo": "bar"
-      },
-      "changed": {}
+      }
     }
   },
   "unchanged": {}

@@ -19,3 +19,7 @@ Get difference of nested files formatter plain
 
 [![asciicast](https://asciinema.org/a/387634.svg)](https://asciinema.org/a/387634)
 
+Get difference of nested files formatter json
+
+[![asciicast](https://asciinema.org/a/387822.svg)](https://asciinema.org/a/387822)
+

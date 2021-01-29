@@ -3,11 +3,13 @@ import json
 
 import yaml
 
+from gendiff.formatters import json as json_format
 from gendiff.formatters import plain, stylish
 
 FORMATS = {  # noqa: WPS407
     'stylish': stylish,
     'plain': plain,
+    'json': json_format,
 }
 
 

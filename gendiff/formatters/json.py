@@ -33,8 +33,22 @@ def make_format(diff, depth=0):
             )),
             ',',
         ]))
-    return '\n'.join([
+    return normalization_json_form('\n'.join([
         '{',
         '\n'.join(list_values)[:-1],
         '{a}{b}'.format(a=('  ' * depth), b='}'),
-    ])
+    ]))
+
+
+def normalization_json_form(string):
+    """Normalize string to json form.
+
+    Args:
+        string: str
+
+    Returns:
+        Return normalize string.
+    """
+    string = string.replace('True', 'true')
+    string = string.replace('False', 'false')
+    return string.replace('None', 'null')

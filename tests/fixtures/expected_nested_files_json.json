@@ -20,8 +20,8 @@
   "changed": {
     "common": {
       "added": {
-        "follow": False,
-        "setting3": None,
+        "follow": false,
+        "setting3": null,
         "setting4": "blah blah",
         "setting5": {
           "key5": "value5"
@@ -29,7 +29,7 @@
       },
       "deleted": {
         "setting2": 200,
-        "setting3": True
+        "setting3": true
       },
       "changed": {
         "setting6": {

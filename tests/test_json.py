@@ -6,7 +6,7 @@ from gendiff import gendiff
 
 def test_generate_diff_plain_two_simple_files():
     """Test formatter json."""
-    with open('tests/fixtures/expected_file1_file2_json.txt') as infile:
+    with open('tests/fixtures/expected_file1_file2_json.json') as infile:
         expected = infile.read()
     diff = gendiff.generate_diff(
         pathlib.Path('tests/fixtures/file1.json'),
@@ -18,7 +18,7 @@ def test_generate_diff_plain_two_simple_files():
 
 def test_generate_diff_plain_two_nested_files():
     """Test formatter json."""
-    with open('tests/fixtures/expected_nested_files_json.txt') as infile:
+    with open('tests/fixtures/expected_nested_files_json.json') as infile:
         expected = infile.read()
     diff = gendiff.generate_diff(
         pathlib.Path('tests/fixtures/file_nested1.yml'),

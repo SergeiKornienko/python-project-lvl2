@@ -38,10 +38,10 @@ def get_content(file_path):  # noqa: WPS210
     Returns:
         Return content files.
     """
-    if file_path.suffix == '.json':
+    if file_path.endswith('.json'):
         with open(str(file_path)) as infile:
             open_file = json.load(infile)
-    elif file_path.suffix == '.yml':
+    elif file_path.endswith('.yml'):
         with open(str(file_path)) as infile1:
             open_file = yaml.safe_load(infile1)
     if open_file is None:

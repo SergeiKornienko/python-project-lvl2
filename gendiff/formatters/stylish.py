@@ -18,10 +18,7 @@ def make_format(diff, depth=0):
     change = diff['changed']
     unchanged = diff['unchanged']
     keys = sorted(
-        add.keys() |
-        delete.keys() |
-        change.keys() |
-        unchanged.keys(),
+        add.keys() | delete.keys() | change.keys() | unchanged.keys(),
     )
     format_diff = []
     for key in keys:
@@ -51,7 +48,7 @@ def make_format(diff, depth=0):
                 depth,
                 TAB,
                 key,
-                make_format(change[key], depth=depth+1),
+                make_format(change[key], depth=depth + 1),
             ))
     return normalization_json_form(
         '\n'.join([

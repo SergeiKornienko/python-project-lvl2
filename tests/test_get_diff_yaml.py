@@ -16,7 +16,7 @@ def test_get_diff_yaml_two_files():
             get_diff(
                 get_content(pathlib.Path('tests/fixtures/file1.yml')),
                 get_content(pathlib.Path('tests/fixtures/file2.yml')),
-                ),
+            ),
             diff,
         )
     with open(PATH_FILE_DIFF) as diff1:
@@ -32,7 +32,7 @@ def test_get_diff_yaml_empty_files():
             get_diff(
                 get_content(pathlib.Path('tests/fixtures/file_empty.yml')),
                 get_content(pathlib.Path('tests/fixtures/file_empty2.yml')),
-                ),
+            ),
             diff,
         )
     with open(PATH_FILE_DIFF) as diff1:
@@ -48,7 +48,7 @@ def test_get_diff_yaml_file_empty():
             get_diff(
                 get_content(pathlib.Path('tests/fixtures/file1.yml')),
                 get_content(pathlib.Path('tests/fixtures/file_empty.yml')),
-                ),
+            ),
             diff,
         )
     with open(PATH_FILE_DIFF) as diff1:
@@ -64,7 +64,7 @@ def test_get_diff_yaml_empty_file():
             get_diff(
                 get_content(pathlib.Path('tests/fixtures/file_empty.yml')),
                 get_content(pathlib.Path('tests/fixtures/file1.yml')),
-                ),
+            ),
             diff,
         )
     with open(PATH_FILE_DIFF) as diff1:
@@ -80,7 +80,7 @@ def test_get_diff_yaml_nested():
             get_diff(
                 get_content(pathlib.Path('tests/fixtures/file_nested1.yml')),
                 get_content(pathlib.Path('tests/fixtures/file_nested2.yml')),
-                ),
+            ),
             diff,
         )
     with open(PATH_FILE_DIFF) as diff1:

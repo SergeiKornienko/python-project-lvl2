@@ -24,11 +24,6 @@ def generate_diff(file_path1, file_path2, formatter='stylish'):
     Returns:
         Return formatting difference files.
     """
-    suffixes = {file_path1.suffix, file_path2.suffix}
-    if len(suffixes) > 1:
-        return 'Different format of files!!!'
-    if len({'.yml', '.json'} | suffixes) > 2:
-        return 'Unsupported format of files!!!'
     return FORMATS[formatter].make_format(
         get_diff(get_content(file_path1), get_content(file_path2)),
     )

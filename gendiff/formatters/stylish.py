@@ -89,8 +89,7 @@ def join_line(depth, indent, key, mean):
         Return join line.
     """
     indent_and_key = ''.join([depth * TAB, indent, key, ':'])
-    if str(mean) == '':
-        return indent_and_key
+
     return ' '.join([indent_and_key, str(mean)])
 
 
@@ -111,8 +110,7 @@ def format_unchanging(dict_unchanged, depth):
         list_values.append(''.join([
             TAB * (depth + 1),
             str(key),
-            ':',
-            ' ',
+            ': ',
             str(format_unchanging(
                 dict_unchanged[key],
                 depth=depth + 1,

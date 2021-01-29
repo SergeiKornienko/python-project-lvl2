@@ -1,11 +1,11 @@
-"""Module of tests formatter stylish."""
+"""Module of tests formatter plain."""
 import pathlib
 
 from gendiff import gendiff
 
 
 def test_generate_diff_plain_two_simple_files():
-    """Test formatters stylish."""
+    """Test formatter plain."""
     with open('tests/fixtures/expected_file1_file2_plain.txt') as infile:
         expected = infile.read()
     diff = gendiff.generate_diff(
@@ -17,7 +17,7 @@ def test_generate_diff_plain_two_simple_files():
 
 
 def test_generate_diff_plain_two_nested_files():
-    """Test formatters stylish."""
+    """Test formatter plain."""
     with open('tests/fixtures/expected_nested_files_plain.txt') as infile:
         expected = infile.read()
     diff = gendiff.generate_diff(

@@ -111,7 +111,8 @@ def format_unchanging(dict_unchanged, depth):
         list_values.append(''.join([
             TAB * (depth + 1),
             str(key),
-            ': ',
+            ':',
+            ' ',
             str(format_unchanging(
                 dict_unchanged[key],
                 depth=depth + 1,

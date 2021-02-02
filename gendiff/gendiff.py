@@ -1,8 +1,6 @@
 """Function for determines the difference in files."""
-import json
 
-import yaml
-
+from gendiff import parser
 from gendiff.formatters import json as json_format
 from gendiff.formatters import plain, stylish
 
@@ -24,29 +22,12 @@ def generate_diff(file_path1, file_path2, formatter='stylish'):
     Returns:
         Return formatting difference files.
     """
-    return FORMATS[formatter].make_format(
-        get_diff(get_content(file_path1), get_content(file_path2)),
+    return FORMATS[formatter].render(
+        get_diff(
+            parser.parse(*parser.open_file(file_path1)),
+            parser.parse(*parser.open_file(file_path2)),
+        ),
     )
-
-
-def get_content(file_path):  # noqa: WPS210
-    """Get content files.
-
-    Args:
-        file_path: path
-
-    Returns:
-        Return content files.
-    """
-    if str(file_path).endswith('.json'):
-        with open(str(file_path)) as infile:
-            open_file = json.load(infile)
-    elif str(file_path).endswith('.yml'):
-        with open(str(file_path)) as infile1:
-            open_file = yaml.safe_load(infile1)
-    if open_file is None:
-        open_file = {}
-    return open_file
 
 
 def get_diff(file1, file2):
@@ -66,7 +47,6 @@ def get_diff(file1, file2):
         'unchanged': {},
     }
     keys = sorted(file1.keys() | file2.keys())
-
     for key in keys:
         changed = [
             file1.get(key) != file2.get(key),

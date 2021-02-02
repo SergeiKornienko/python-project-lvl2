@@ -3,7 +3,7 @@
 TAB = '    '
 
 
-def make_format(diff, depth=0):
+def render(diff, depth=0):
     """Format dict with difference.
 
     Args:
@@ -48,29 +48,28 @@ def make_format(diff, depth=0):
                 depth,
                 TAB,
                 key,
-                make_format(change[key], depth=depth + 1),
+                render(change[key], depth=depth + 1),
             ))
-    return normalization_json_form(
-        '\n'.join([
-            '{',
-            *format_diff,
-            '{a}{b}'. format(a=TAB * depth, b='}'),
-        ]),
-    )
+    return '\n'.join([
+        '{',
+        *format_diff,
+        '{a}{b}'. format(a=TAB * depth, b='}'),
+    ])
 
 
-def normalization_json_form(string):
-    """Normalize string to json form.
+def convert_for_formatter(mean):
+    """Convert mean.
 
     Args:
-        string: str
+        mean: different
 
     Returns:
-        Return normalize string.
+        Return true mean.
     """
-    string = string.replace('True', 'true')
-    string = string.replace('False', 'false')
-    return string.replace('None', 'null')
+    bool_to_json = {'True': 'true', 'False': 'false', 'None': 'null'}
+    if str(mean) in bool_to_json.keys():
+        return bool_to_json[str(mean)]
+    return mean
 
 
 def join_line(depth, indent, key, mean):
@@ -86,7 +85,6 @@ def join_line(depth, indent, key, mean):
         Return join line.
     """
     indent_and_key = ''.join([depth * TAB, indent, key, ':'])
-
     return ' '.join([indent_and_key, str(mean)])
 
 
@@ -100,7 +98,10 @@ def format_unchanging(dict_unchanged, depth):
     Returns:
         Return formatting dict.
     """
+    bool_to_json = {'True': 'true', 'False': 'false', 'None': 'null'}
     if not isinstance(dict_unchanged, dict):
+        if str(dict_unchanged) in bool_to_json.keys():
+            return bool_to_json[str(dict_unchanged)]
         return str(dict_unchanged)
     list_values = []
     for key in dict_unchanged.keys():

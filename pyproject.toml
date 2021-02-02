@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "hexlet-code"
 version = "0.1.0"
-description = ""
+description = "The program determines difference of two files (support JSON and YAML files)"
 authors = ["Sergey Kornienko <skornienko29@gmail.com>"]
 packages = [
   { include = "gendiff" },

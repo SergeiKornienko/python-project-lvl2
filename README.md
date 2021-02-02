@@ -7,6 +7,8 @@ The program is designed as training project.
 
 https://ru.hexlet.io/programs/python/projects/50. 
 
+Command for setup:      pip install -i https://test.pypi.org/simple/ generate-diff-skornienko==0.1.0
+
 The program determines difference of two files (support JSON and YAML files). 
 
 <details>

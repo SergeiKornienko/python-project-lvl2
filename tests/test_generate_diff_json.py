@@ -2,7 +2,8 @@
 import json
 import pathlib
 
-from gendiff.gendiff import get_content, get_diff
+from gendiff.gendiff import get_diff
+from gendiff.parser import open_file, parse
 
 PATH_FILE_DIFF = 'tests/fixtures/diff_file1_file2.json'
 
@@ -14,8 +15,8 @@ def test_get_diff_json_two_files():
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
             get_diff(
-                get_content(pathlib.Path('tests/fixtures/file1.json')),
-                get_content(pathlib.Path('tests/fixtures/file2.json')),
+                parse(*open_file(pathlib.Path('tests/fixtures/file1.json'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file2.json'))),
             ),
             diff,
         )
@@ -30,8 +31,8 @@ def test_get_diff_json_empty_files():
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
             get_diff(
-                get_content(pathlib.Path('tests/fixtures/file_empty.json')),
-                get_content(pathlib.Path('tests/fixtures/file_empty2.json')),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.json'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_empty2.json'))),
             ),
             diff,
         )
@@ -46,8 +47,8 @@ def test_get_diff_json_file_empty():
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
             get_diff(
-                get_content(pathlib.Path('tests/fixtures/file1.json')),
-                get_content(pathlib.Path('tests/fixtures/file_empty.json')),
+                parse(*open_file(pathlib.Path('tests/fixtures/file1.json'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.json'))),
             ),
             diff,
         )
@@ -62,8 +63,8 @@ def test_get_diff_json_empty_file():
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
             get_diff(
-                get_content(pathlib.Path('tests/fixtures/file_empty.json')),
-                get_content(pathlib.Path('tests/fixtures/file1.json')),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.json'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file1.json'))),
             ),
             diff,
         )
@@ -78,8 +79,8 @@ def test_get_diff_json_nested():
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
             get_diff(
-                get_content(pathlib.Path('tests/fixtures/file_nested1.json')),
-                get_content(pathlib.Path('tests/fixtures/file_nested2.json')),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_nested1.json'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_nested2.json'))),
             ),
             diff,
         )

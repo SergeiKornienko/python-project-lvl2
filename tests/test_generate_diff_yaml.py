@@ -2,7 +2,8 @@
 import json
 import pathlib
 
-from gendiff.gendiff import generate_diff
+from gendiff.gendiff import get_diff
+from gendiff.parser import open_file, parse
 
 PATH_FILE_DIFF = 'tests/fixtures/diff_file1_file2.json'
 
@@ -13,9 +14,9 @@ def test_get_diff_yaml_two_files():
         expected = json.load(infile)
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
-            generate_diff(
-                pathlib.Path('tests/fixtures/file1.yml'),
-                pathlib.Path('tests/fixtures/file2.yml'),
+            get_diff(
+                parse(*open_file(pathlib.Path('tests/fixtures/file1.yml'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file2.yml'))),
             ),
             diff,
         )
@@ -29,9 +30,9 @@ def test_get_diff_yaml_empty_files():
         expected = json.load(infile)
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
-            generate_diff(
-                pathlib.Path('tests/fixtures/file_empty.yml'),
-                pathlib.Path('tests/fixtures/file_empty2.yml'),
+            get_diff(
+                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.yml'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_empty2.yml'))),
             ),
             diff,
         )
@@ -46,8 +47,8 @@ def test_get_diff_yaml_file_empty():
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
             get_diff(
-                get_content(pathlib.Path('tests/fixtures/file1.yml')),
-                get_content(pathlib.Path('tests/fixtures/file_empty.yml')),
+                parse(*open_file(pathlib.Path('tests/fixtures/file1.yml'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.yml'))),
             ),
             diff,
         )
@@ -62,8 +63,8 @@ def test_get_diff_yaml_empty_file():
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
             get_diff(
-                get_content(pathlib.Path('tests/fixtures/file_empty.yml')),
-                get_content(pathlib.Path('tests/fixtures/file1.yml')),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.yml'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file1.yml'))),
             ),
             diff,
         )
@@ -78,8 +79,8 @@ def test_get_diff_yaml_nested():
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
             get_diff(
-                get_content(pathlib.Path('tests/fixtures/file_nested1.yml')),
-                get_content(pathlib.Path('tests/fixtures/file_nested2.yml')),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_nested1.yml'))),
+                parse(*open_file(pathlib.Path('tests/fixtures/file_nested2.yml'))),
             ),
             diff,
         )

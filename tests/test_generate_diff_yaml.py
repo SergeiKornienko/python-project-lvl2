@@ -2,7 +2,7 @@
 import json
 import pathlib
 
-from gendiff.gendiff import get_content, get_diff
+from gendiff.gendiff import generate_diff
 
 PATH_FILE_DIFF = 'tests/fixtures/diff_file1_file2.json'
 
@@ -13,9 +13,9 @@ def test_get_diff_yaml_two_files():
         expected = json.load(infile)
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
-            get_diff(
-                get_content(pathlib.Path('tests/fixtures/file1.yml')),
-                get_content(pathlib.Path('tests/fixtures/file2.yml')),
+            generate_diff(
+                pathlib.Path('tests/fixtures/file1.yml'),
+                pathlib.Path('tests/fixtures/file2.yml'),
             ),
             diff,
         )
@@ -29,9 +29,9 @@ def test_get_diff_yaml_empty_files():
         expected = json.load(infile)
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
-            get_diff(
-                get_content(pathlib.Path('tests/fixtures/file_empty.yml')),
-                get_content(pathlib.Path('tests/fixtures/file_empty2.yml')),
+            generate_diff(
+                pathlib.Path('tests/fixtures/file_empty.yml'),
+                pathlib.Path('tests/fixtures/file_empty2.yml'),
             ),
             diff,
         )

@@ -43,16 +43,14 @@ def test_generate_diff(file1, file2, expected_file, formatter):
 
 
 @pytest.mark.parametrize('file1,file2,expected_file', [
-    (
-     'tests/fixtures/file1.json',
+    ('tests/fixtures/file1.json',
      'tests/fixtures/file2.json',
      'tests/fixtures/expected_file1_file2.json',
      ),
-    (
-     'tests/fixtures/file_nested1.json',
+    ('tests/fixtures/file_nested1.json',
      'tests/fixtures/file_nested2.json',
      'tests/fixtures/expected_nested_files.json',
-    ),
+     ),
 ])
 def test_generate_diff_json(file1, file2, expected_file):
     """Test formatter json."""

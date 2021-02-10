@@ -10,56 +10,46 @@ PATH_FILE_DIFF = 'tests/fixtures/diff_file1_file2.json'
 
 
 @pytest.mark.parametrize('file1,file2,expected_file', [
-    (
-     'tests/fixtures/file1.json',
+    ('tests/fixtures/file1.json',
      'tests/fixtures/file2.json',
      'tests/fixtures/expected_file1_file2.json',
      ),
-    (
-     'tests/fixtures/file_empty.json',
+    ('tests/fixtures/file_empty.json',
      'tests/fixtures/file_empty2.json',
      'tests/fixtures/expected_empty.json',
-    ),
-    (
-     'tests/fixtures/file1.json',
+     ),
+    ('tests/fixtures/file1.json',
      'tests/fixtures/file_empty.json',
      'tests/fixtures/expected_file1_empty.json',
-    ),
-    (
-     'tests/fixtures/file_empty.json',
+     ),
+    ('tests/fixtures/file_empty.json',
      'tests/fixtures/file1.json',
      'tests/fixtures/expected_empty_file1.json',
-    ),
-    (
-     'tests/fixtures/file_nested1.json',
+     ),
+    ('tests/fixtures/file_nested1.json',
      'tests/fixtures/file_nested2.json',
      'tests/fixtures/expected_nested_files.json',
-    ),
-    (
-     'tests/fixtures/file1.yml',
+     ),
+    ('tests/fixtures/file1.yml',
      'tests/fixtures/file2.yml',
      'tests/fixtures/expected_file1_file2.json',
-    ),
-    (
-     'tests/fixtures/file_empty.yml',
+     ),
+    ('tests/fixtures/file_empty.yml',
      'tests/fixtures/file_empty2.yml',
      'tests/fixtures/expected_empty.json',
-    ),
-    (
-     'tests/fixtures/file1.yml',
+     ),
+    ('tests/fixtures/file1.yml',
      'tests/fixtures/file_empty.yml',
      'tests/fixtures/expected_file1_empty.json',
-    ),
-    (
-     'tests/fixtures/file_empty.yml',
+     ),
+    ('tests/fixtures/file_empty.yml',
      'tests/fixtures/file1.yml',
      'tests/fixtures/expected_empty_file1.json',
-    ),
-    (
-     'tests/fixtures/file_nested1.yml',
+     ),
+    ('tests/fixtures/file_nested1.yml',
      'tests/fixtures/file_nested2.yml',
      'tests/fixtures/expected_nested_files.json',
-    ),
+     ),
 ])
 def test_get_diff(file1, file2, expected_file):
     """Test of function get_diff with two files."""

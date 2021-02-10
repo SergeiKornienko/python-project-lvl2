@@ -12,4 +12,4 @@ def render(diff):
     Returns:
         Return formatting difference.
     """
-    return json.loads(json.dumps(diff))
+    return json.dumps(diff)

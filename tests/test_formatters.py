@@ -1,5 +1,6 @@
 """Module of tests formatters."""
 import pathlib
+import json
 
 import pytest
 
@@ -68,4 +69,4 @@ def test_generate_diff_json(file1, file2, expected_file):
         pathlib.Path(file2),
         formatter='json',
     )
-    assert diff == expected
+    assert json.loads(diff) == expected

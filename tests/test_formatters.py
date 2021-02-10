@@ -9,30 +9,26 @@ from gendiff.parser import get_format, parse, read_file
 
 
 @pytest.mark.parametrize('file1,file2,expected_file,formatter', [
-    (
-     'tests/fixtures/file1.json',
+    ('tests/fixtures/file1.json',
      'tests/fixtures/file2.json',
      'tests/fixtures/expected_file1_file2_stylish.txt',
      'stylish'
      ),
-    (
-     'tests/fixtures/file_nested1.json',
+    ('tests/fixtures/file_nested1.json',
      'tests/fixtures/file_nested2.json',
      'tests/fixtures/expected_nested_files_stylish.txt',
      'stylish',
-    ),
-    (
-     'tests/fixtures/file1.json',
+     ),
+    ('tests/fixtures/file1.json',
      'tests/fixtures/file2.json',
      'tests/fixtures/expected_file1_file2_plain.txt',
      'plain'
-    ),
-    (
-     'tests/fixtures/file_nested1.json',
+     ),
+    ('tests/fixtures/file_nested1.json',
      'tests/fixtures/file_nested2.json',
      'tests/fixtures/expected_nested_files_plain.txt',
      'plain',
-    ),
+     ),
 ])
 def test_generate_diff(file1, file2, expected_file, formatter):
     """Test formatters."""

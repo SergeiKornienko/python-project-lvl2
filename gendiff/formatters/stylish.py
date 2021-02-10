@@ -13,42 +13,49 @@ def render(diff, depth=0):
     Returns:
         Return formatting difference.
     """
-    add = diff['added']
-    delete = diff['deleted']
-    change = diff['changed']
-    unchanged = diff['unchanged']
-    keys = sorted(
-        add.keys() | delete.keys() | change.keys() | unchanged.keys(),
-    )
+    keys = sorted(diff.keys())
     format_diff = []
     for key in keys:
-        if key in delete.keys():
+        if diff[key]['type'] == 'deleted':
             format_diff.append(join_line(
                 depth,
                 '  - ',
                 key,
-                format_unchanging(delete[key], depth + 1),
+                format_unchanging(diff[key]['value'], depth + 1),
             ))
-        if key in add.keys():
+        if diff[key]['type'] == 'added':
             format_diff.append(join_line(
                 depth,
                 '  + ',
                 key,
-                format_unchanging(add[key], depth + 1),
+                format_unchanging(diff[key]['value'], depth + 1),
             ))
-        elif key in unchanged.keys():
+        elif diff[key]['type'] == 'unchanged':
             format_diff.append(join_line(
                 depth,
                 TAB,
                 key,
-                format_unchanging(unchanged[key], depth + 1),
+                format_unchanging(diff[key]['value'], depth + 1),
             ))
-        elif key in change.keys():
+        elif diff[key]['type'] == 'changed':
+            format_diff.append(join_line(
+                depth,
+                '  - ',
+                key,
+                format_unchanging(diff[key]['value'], depth + 1),
+            ))
+            format_diff.append(join_line(
+                depth,
+                '  + ',
+                key,
+                format_unchanging(diff[key]['value_new'], depth + 1),
+            ))
+        elif diff[key]['type'] == 'default':
             format_diff.append(join_line(
                 depth,
                 TAB,
                 key,
-                render(change[key], depth=depth + 1),
+                render(diff[key]['value'], depth + 1),
             ))
     return '\n'.join([
         '{',
@@ -57,23 +64,8 @@ def render(diff, depth=0):
     ])
 
 
-def convert_for_formatter(mean):
-    """Convert mean.
-
-    Args:
-        mean: different
-
-    Returns:
-        Return true mean.
-    """
-    bool_to_json = {'True': 'true', 'False': 'false', 'None': 'null'}
-    if str(mean) in bool_to_json.keys():
-        return bool_to_json[str(mean)]
-    return mean
-
-
 def join_line(depth, indent, key, mean):
-    """Join line in dict.
+    """Join words in line.
 
     Args:
         depth: int
@@ -98,10 +90,10 @@ def format_unchanging(dict_unchanged, depth):
     Returns:
         Return formatting dict.
     """
-    bool_to_json = {'True': 'true', 'False': 'false', 'None': 'null'}
+    objects_to_json = {'True': 'true', 'False': 'false', 'None': 'null'}
     if not isinstance(dict_unchanged, dict):
-        if str(dict_unchanged) in bool_to_json.keys():
-            return bool_to_json[str(dict_unchanged)]
+        if str(dict_unchanged) in objects_to_json.keys():
+            return objects_to_json[str(dict_unchanged)]
         return str(dict_unchanged)
     list_values = []
     for key in dict_unchanged.keys():

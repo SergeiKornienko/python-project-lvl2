@@ -1,167 +1,83 @@
 """Module of tests get_diff."""
 import json
 import pathlib
+import pytest
 
 from gendiff.gendiff import get_diff
-from gendiff.parser import open_file, parse
+from gendiff.parser import get_format, parse, read_file
 
 PATH_FILE_DIFF = 'tests/fixtures/diff_file1_file2.json'
 
 
-def test_get_diff_json_two_files():
+@pytest.mark.parametrize('file1,file2,expected_file', [
+    (
+     'tests/fixtures/file1.json',
+     'tests/fixtures/file2.json',
+     'tests/fixtures/expected_file1_file2.json',
+     ),
+    (
+     'tests/fixtures/file_empty.json',
+     'tests/fixtures/file_empty2.json',
+     'tests/fixtures/expected_empty.json',
+    ),
+    (
+     'tests/fixtures/file1.json',
+     'tests/fixtures/file_empty.json',
+     'tests/fixtures/expected_file1_empty.json',
+    ),
+    (
+     'tests/fixtures/file_empty.json',
+     'tests/fixtures/file1.json',
+     'tests/fixtures/expected_empty_file1.json',
+    ),
+    (
+     'tests/fixtures/file_nested1.json',
+     'tests/fixtures/file_nested2.json',
+     'tests/fixtures/expected_nested_files.json',
+    ),
+    (
+     'tests/fixtures/file1.yml',
+     'tests/fixtures/file2.yml',
+     'tests/fixtures/expected_file1_file2.json',
+    ),
+    (
+     'tests/fixtures/file_empty.yml',
+     'tests/fixtures/file_empty2.yml',
+     'tests/fixtures/expected_empty.json',
+    ),
+    (
+     'tests/fixtures/file1.yml',
+     'tests/fixtures/file_empty.yml',
+     'tests/fixtures/expected_file1_empty.json',
+    ),
+    (
+     'tests/fixtures/file_empty.yml',
+     'tests/fixtures/file1.yml',
+     'tests/fixtures/expected_empty_file1.json',
+    ),
+    (
+     'tests/fixtures/file_nested1.yml',
+     'tests/fixtures/file_nested2.yml',
+     'tests/fixtures/expected_nested_files.json',
+    ),
+])
+def test_get_diff(file1, file2, expected_file):
     """Test of function get_diff with two files."""
-    with open('tests/fixtures/expected_file1_file2.json') as infile:
-        expected = json.load(infile)
+    expected = parse(
+        read_file(pathlib.Path(expected_file)),
+        get_format(pathlib.Path(expected_file)),
+    )
     with open(PATH_FILE_DIFF, 'w') as diff:
         json.dump(
             get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file1.json'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file2.json'))),
-            ),
-            diff,
-        )
-    with open(PATH_FILE_DIFF) as diff1:
-        assert json.load(diff1) == expected
-
-
-def test_get_diff_json_empty_files():
-    """Test of function get_diff with two empty files."""
-    with open('tests/fixtures/expected_empty.json') as infile:
-        expected = json.load(infile)
-    with open(PATH_FILE_DIFF, 'w') as diff:
-        json.dump(
-            get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.json'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file_empty2.json'))),
-            ),
-            diff,
-        )
-    with open(PATH_FILE_DIFF) as diff1:
-        assert json.load(diff1) == expected
-
-
-def test_get_diff_json_file_empty():
-    """Test of function get_diff with first file and second empty file."""
-    with open('tests/fixtures/expected_file1_empty.json') as infile:
-        expected = json.load(infile)
-    with open(PATH_FILE_DIFF, 'w') as diff:
-        json.dump(
-            get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file1.json'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.json'))),
-            ),
-            diff,
-        )
-    with open(PATH_FILE_DIFF) as diff1:
-        assert json.load(diff1) == expected
-
-
-def test_get_diff_json_empty_file():
-    """Test of function get_diff with first empty file and second file."""
-    with open('tests/fixtures/expected_empty_file1.json') as infile:
-        expected = json.load(infile)
-    with open(PATH_FILE_DIFF, 'w') as diff:
-        json.dump(
-            get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.json'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file1.json'))),
-            ),
-            diff,
-        )
-    with open(PATH_FILE_DIFF) as diff1:
-        assert json.load(diff1) == expected
-
-
-def test_get_diff_json_nested():
-    """Test of function get_diff with nested files."""
-    with open('tests/fixtures/expected_nested_files.json') as infile:
-        expected = json.load(infile)
-    with open(PATH_FILE_DIFF, 'w') as diff:
-        json.dump(
-            get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file_nested1.json'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file_nested2.json'))),
-            ),
-            diff,
-        )
-    with open(PATH_FILE_DIFF) as diff1:
-        assert json.load(diff1) == expected
-
-
-
-def test_get_diff_yaml_two_files():
-    """Test of function get_diff with two files."""
-    with open('tests/fixtures/expected_file1_file2.json') as infile:
-        expected = json.load(infile)
-    with open(PATH_FILE_DIFF, 'w') as diff:
-        json.dump(
-            get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file1.yml'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file2.yml'))),
-            ),
-            diff,
-        )
-    with open(PATH_FILE_DIFF) as diff1:
-        assert json.load(diff1) == expected
-
-
-def test_get_diff_yaml_empty_files():
-    """Test of function get_diff with two empty files."""
-    with open('tests/fixtures/expected_empty.json') as infile:
-        expected = json.load(infile)
-    with open(PATH_FILE_DIFF, 'w') as diff:
-        json.dump(
-            get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.yml'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file_empty2.yml'))),
-            ),
-            diff,
-        )
-    with open(PATH_FILE_DIFF) as diff1:
-        assert json.load(diff1) == expected
-
-
-def test_get_diff_yaml_file_empty():
-    """Test of function get_diff with first file and second empty file."""
-    with open('tests/fixtures/expected_file1_empty.json') as infile:
-        expected = json.load(infile)
-    with open(PATH_FILE_DIFF, 'w') as diff:
-        json.dump(
-            get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file1.yml'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.yml'))),
-            ),
-            diff,
-        )
-    with open(PATH_FILE_DIFF) as diff1:
-        assert json.load(diff1) == expected
-
-
-def test_get_diff_yaml_empty_file():
-    """Test of function get_diff with first empty file and second file."""
-    with open('tests/fixtures/expected_empty_file1.json') as infile:
-        expected = json.load(infile)
-    with open(PATH_FILE_DIFF, 'w') as diff:
-        json.dump(
-            get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file_empty.yml'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file1.yml'))),
-            ),
-            diff,
-        )
-    with open(PATH_FILE_DIFF) as diff1:
-        assert json.load(diff1) == expected
-
-
-def test_get_diff_yaml_nested():
-    """Test of function get_diff with nested files."""
-    with open('tests/fixtures/expected_nested_files.json') as infile:
-        expected = json.load(infile)
-    with open(PATH_FILE_DIFF, 'w') as diff:
-        json.dump(
-            get_diff(
-                parse(*open_file(pathlib.Path('tests/fixtures/file_nested1.yml'))),
-                parse(*open_file(pathlib.Path('tests/fixtures/file_nested2.yml'))),
+                parse(
+                    read_file(pathlib.Path(file1)),
+                    get_format(pathlib.Path(file1)),
+                ),
+                parse(
+                    read_file(pathlib.Path(file2)),
+                    get_format(pathlib.Path(file2)),
+                ),
             ),
             diff,
         )

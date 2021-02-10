@@ -1,77 +1,71 @@
 """Module of tests formatters."""
 import pathlib
 
+import pytest
+
 from gendiff import gendiff
+from gendiff.parser import get_format, parse, read_file
 
 
-def test_generate_diff_stylish_two_simple_files():
-    """Test formatters stylish."""
-    with open('tests/fixtures/expected_file1_file2_stylish.txt') as infile:
+@pytest.mark.parametrize('file1,file2,expected_file,formatter', [
+    (
+     'tests/fixtures/file1.json',
+     'tests/fixtures/file2.json',
+     'tests/fixtures/expected_file1_file2_stylish.txt',
+     'stylish'
+     ),
+    (
+     'tests/fixtures/file_nested1.json',
+     'tests/fixtures/file_nested2.json',
+     'tests/fixtures/expected_nested_files_stylish.txt',
+     'stylish',
+    ),
+    (
+     'tests/fixtures/file1.json',
+     'tests/fixtures/file2.json',
+     'tests/fixtures/expected_file1_file2_plain.txt',
+     'plain'
+    ),
+    (
+     'tests/fixtures/file_nested1.json',
+     'tests/fixtures/file_nested2.json',
+     'tests/fixtures/expected_nested_files_plain.txt',
+     'plain',
+    ),
+])
+def test_generate_diff(file1, file2, expected_file, formatter):
+    """Test formatters."""
+    with open(expected_file) as infile:
         expected = infile.read()
     diff = gendiff.generate_diff(
-        pathlib.Path('tests/fixtures/file1.json'),
-        pathlib.Path('tests/fixtures/file2.json'),
+        pathlib.Path(file1),
+        pathlib.Path(file2),
+        formatter=formatter
     )
     assert diff == expected
 
 
-def test_generate_diff_stylish_two_nested_files():
-    """Test formatters stylish."""
-    with open('tests/fixtures/expected_nested_files_stylish.txt') as infile:
-        expected = infile.read()
-    diff = gendiff.generate_diff(
-        pathlib.Path('tests/fixtures/file_nested1.json'),
-        pathlib.Path('tests/fixtures/file_nested2.json'),
-    )
-    assert diff == expected
-
-
-
-
-def test_generate_diff_plain_two_simple_files():
-    """Test formatter plain."""
-    with open('tests/fixtures/expected_file1_file2_plain.txt') as infile:
-        expected = infile.read()
-    diff = gendiff.generate_diff(
-        pathlib.Path('tests/fixtures/file1.json'),
-        pathlib.Path('tests/fixtures/file2.json'),
-        formatter='plain',
-    )
-    assert diff == expected
-
-
-def test_generate_diff_plain_two_nested_files():
-    """Test formatter plain."""
-    with open('tests/fixtures/expected_nested_files_plain.txt') as infile:
-        expected = infile.read()
-    diff = gendiff.generate_diff(
-        pathlib.Path('tests/fixtures/file_nested1.json'),
-        pathlib.Path('tests/fixtures/file_nested2.json'),
-        formatter='plain',
-    )
-    assert diff == expected
-
-
-def test_generate_diff_json_two_simple_files():
+@pytest.mark.parametrize('file1,file2,expected_file', [
+    (
+     'tests/fixtures/file1.json',
+     'tests/fixtures/file2.json',
+     'tests/fixtures/expected_file1_file2.json',
+     ),
+    (
+     'tests/fixtures/file_nested1.json',
+     'tests/fixtures/file_nested2.json',
+     'tests/fixtures/expected_nested_files.json',
+    ),
+])
+def test_generate_diff_json(file1, file2, expected_file):
     """Test formatter json."""
-    with open('tests/fixtures/expected_file1_file2_json.json') as infile:
-        expected = infile.read()
+    expected = parse(
+        read_file(pathlib.Path(expected_file)),
+        get_format(pathlib.Path(expected_file)),
+    )
     diff = gendiff.generate_diff(
-        pathlib.Path('tests/fixtures/file1.json'),
-        pathlib.Path('tests/fixtures/file2.json'),
+        pathlib.Path(file1),
+        pathlib.Path(file2),
         formatter='json',
     )
     assert diff == expected
-
-
-def test_generate_diff_json_two_nested_files():
-    """Test formatter json."""
-    with open('tests/fixtures/expected_nested_files_json.json') as infile:
-        expected = infile.read()
-    diff = gendiff.generate_diff(
-        pathlib.Path('tests/fixtures/file_nested1.yml'),
-        pathlib.Path('tests/fixtures/file_nested2.yml'),
-        formatter='json',
-    )
-    assert diff == expected
-

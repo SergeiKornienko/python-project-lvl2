@@ -43,28 +43,28 @@ def get_diff(file1, file2):
     tree_diff = {}
     keys = file1.keys() | file2.keys()
     for key in keys:
-        noda = {}
+        node = {}
         value1 = file1.get(key)
         value2 = file2.get(key)
         if key not in file2.keys():
-            noda['type'] = 'deleted'
-            noda['value'] = value1
+            node['type'] = 'deleted'
+            node['value'] = value1
         elif key not in file1.keys():
-            noda['type'] = 'added'
-            noda['value'] = value2
+            node['type'] = 'added'
+            node['value'] = value2
         elif value1 == value2:
-            noda['type'] = 'unchanged'
-            noda['value'] = value1
+            node['type'] = 'unchanged'
+            node['value'] = value1
         elif all([
             value1 != value2,
             isinstance(value1, dict),
             isinstance(value2, dict),
         ]):
-            noda['value'] = get_diff(value1, value2)
-            noda['type'] = 'default'
+            node['value'] = get_diff(value1, value2)
+            node['type'] = 'nested'
         else:
-            noda['type'] = 'changed'
-            noda['value'] = value1
-            noda['value_new'] = value2
-        tree_diff[key] = noda
+            node['type'] = 'changed'
+            node['value'] = value1
+            node['value_new'] = value2
+        tree_diff[key] = node
     return tree_diff

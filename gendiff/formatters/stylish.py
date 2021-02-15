@@ -50,7 +50,7 @@ def render(diff, depth=0):
                 key,
                 format_unchanging(diff[key]['value_new'], depth + 1),
             ))
-        elif diff[key]['type'] == 'default':
+        elif diff[key]['type'] == 'nested':
             format_diff.append(join_line(
                 depth,
                 TAB,

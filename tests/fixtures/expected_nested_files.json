@@ -20,7 +20,7 @@
     }
   },
   "common": {
-    "type": "default",
+    "type": "nested",
     "value": {
       "follow": {
         "type": "added",
@@ -50,10 +50,10 @@
         }
       },
       "setting6": {
-        "type": "default",
+        "type": "nested",
         "value": {
           "doge": {
-            "type": "default",
+            "type": "nested",
             "value": {
               "wow": {
                 "type": "changed",
@@ -75,7 +75,7 @@
     }
   },
   "group1": {
-    "type": "default",
+    "type": "nested",
     "value": {
       "baz": {
         "type": "changed",

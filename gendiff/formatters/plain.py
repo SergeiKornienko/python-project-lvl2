@@ -40,7 +40,7 @@ def render(diff, path=''):
                 new_path_string,
                 'was removed',
             ]))
-        elif diff[key]['type'] == 'default':
+        elif diff[key]['type'] == 'nested':
             list_diff.append(render(
                 diff[key]['value'],
                 path=new_path,

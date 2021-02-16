@@ -5,7 +5,6 @@ import json
 import pytest
 
 from gendiff import gendiff
-from gendiff.parser import get_format, parse, read_file
 
 
 @pytest.mark.parametrize('file1,file2,expected_file,formatter', [
@@ -55,10 +54,7 @@ def test_generate_diff(file1, file2, expected_file, formatter):
 ])
 def test_generate_diff_json(file1, file2, expected_file):
     """Test formatter json."""
-    expected = parse(
-        read_file(pathlib.Path(expected_file)),
-        get_format(pathlib.Path(expected_file)),
-    )
+    expected = json.loads(gendiff.read_file(pathlib.Path(expected_file)))
     diff = gendiff.generate_diff(
         pathlib.Path(file1),
         pathlib.Path(file2),

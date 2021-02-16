@@ -1,6 +1,6 @@
 """Function for determines the difference in files."""
 
-from gendiff.parser import get_format, parse, read_file
+from gendiff.parser import parse
 from gendiff.formatters import json as json_format
 from gendiff.formatters import plain, stylish
 
@@ -28,6 +28,33 @@ def generate_diff(file_path1, file_path2, formatter='stylish'):
             parse(read_file(file_path2), get_format(file_path2)),
         ),
     )
+
+
+def get_format(file_path):
+    """Get format of file.
+
+    Args:
+        file_path: path
+
+    Returns:
+        Return suffix of file.
+    """
+    return str(file_path).rsplit('.', 1)[-1]
+
+
+def read_file(file_path):
+    """Open file.
+
+    Args:
+        file_path: path
+
+    Returns:
+        Return content of a file.
+    """
+    path = str(file_path)
+    with open(path, 'r') as infile:
+        content = infile.read()
+    return content
 
 
 def get_diff(file1, file2):

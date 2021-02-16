@@ -23,16 +23,16 @@ def render(diff, path=''):
                 PROPERTY,
                 new_path_string,
                 'was updated. From',
-                convert_for_formatter(diff[key]['value']),
+                get_correct_value(diff[key]['value']),
                 'to',
-                convert_for_formatter(diff[key]['value_new']),
+                get_correct_value(diff[key]['value_new']),
             ]))
         elif diff[key]['type'] == 'added':
             list_diff.append(' '.join([
                 PROPERTY,
                 new_path_string,
                 'was added with value:',
-                convert_for_formatter(diff[key]['value']),
+                get_correct_value(diff[key]['value']),
             ]))
         elif diff[key]['type'] == 'deleted':
             list_diff.append(' '.join([
@@ -48,20 +48,20 @@ def render(diff, path=''):
     return '\n'.join(list_diff)
 
 
-def convert_for_formatter(mean):
-    """Convert mean.
+def get_correct_value(value):
+    """Convert value.
 
     Args:
-        mean: different
+        value: different
 
     Returns:
-        Return true mean.
+        Return correct value.
     """
     object_to_json = {'True': 'true', 'False': 'false', 'None': 'null'}
-    if str(mean) in object_to_json.keys():
-        return object_to_json[str(mean)]
-    elif isinstance(mean, str):
-        return "'{b}'".format(b=mean)
-    elif isinstance(mean, dict):
+    if str(value) in object_to_json.keys():
+        return object_to_json[str(value)]
+    elif isinstance(value, str):
+        return "'{b}'".format(b=value)
+    elif isinstance(value, dict):
         return '[complex value]'
-    return '{b}'.format(b=mean)
+    return '{b}'.format(b=value)
